@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GEO-Checkliste 2026 – move:elevator</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f0;color:#1a1a1a;padding:1.5rem}
+  .wrap{max-width:680px;margin:0 auto}
+  h1{font-size:22px;font-weight:600;color:#1a1a1a;margin-bottom:4px}
+  .sub{font-size:14px;color:#666;margin-bottom:1.5rem}
+  .progress-label{font-size:13px;color:#666;margin-bottom:6px}
+  .progress-bar-bg{height:6px;background:#e0dfd9;border-radius:3px;margin-bottom:1.5rem}
+  .progress-bar-fill{height:6px;background:#E8650A;border-radius:3px;transition:width 0.3s}
+  .section{margin-bottom:1rem;border-radius:10px;overflow:hidden;border:0.5px solid #dddbd4}
+  .section-header{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;user-select:none;background:#fff}
+  .section-header:hover{background:#faf9f6}
+  .section-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;color:#fff}
+  .section-title{font-size:15px;font-weight:600;color:#1a1a1a;flex:1}
+  .section-count{font-size:12px;color:#888}
+  .chevron{font-size:11px;color:#aaa;transition:transform 0.2s}
+  .chevron.open{transform:rotate(90deg)}
+  .items{display:none}
+  .items.open{display:block}
+  .item{display:flex;align-items:flex-start;gap:12px;padding:11px 14px;border-top:0.5px solid #eeecea;cursor:pointer;background:#fff;transition:background 0.12s}
+  .item:hover{background:#faf9f6}
+  .cb{width:18px;height:18px;border-radius:4px;border:1.5px solid #ccc;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+  .cb.checked{background:#E8650A;border-color:#E8650A}
+  .cb.checked::after{content:'';display:block;width:10px;height:7px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+  .item-text{flex:1}
+  .item-label{font-size:14px;color:#1a1a1a;line-height:1.5}
+  .item-hint{font-size:12px;color:#888;margin-top:3px;line-height:1.45}
+  .badge{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;margin-left:6px;font-weight:500;vertical-align:middle}
+  .badge-now{background:#FEF0E6;color:#B34D00}
+  .badge-quick{background:#EAF3DE;color:#3B6D11}
+  .badge-tech{background:#E6F1FB;color:#185FA5}
+  .footer{margin-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .reset-btn{background:none;border:0.5px solid #ccc;border-radius:8px;padding:8px 16px;font-size:13px;color:#666;cursor:pointer}
+  .reset-btn:hover{background:#f0efe9}
+  .legend{display:flex;gap:10px;flex-wrap:wrap}
+  .legend-item{font-size:12px;color:#888;display:flex;align-items:center;gap:4px}
+  .done-msg{display:none;padding:12px 16px;background:#EAF3DE;border-radius:10px;font-size:14px;color:#3B6D11;margin-top:1rem;border:0.5px solid #C0DD97}
+  .branding{margin-top:2rem;text-align:center;font-size:12px;color:#bbb}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>GEO-Checkliste 2026</h1>
+  <p class="sub">Konkrete Maßnahmen für KI-Sichtbarkeit – Felix Landwehr, move:elevator</p>
+
+  <p class="progress-label" id="prog-label">0 von 40 erledigt</p>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog-fill" style="width:0%"></div></div>
+
+  <div id="sections"></div>
+
+  <div class="done-msg" id="done-msg">Alle Maßnahmen abgehakt – dein GEO-Setup ist ready!</div>
+
+  <div class="footer">
+    <button class="reset-btn" onclick="resetAll()">Zurücksetzen</button>
+    <div class="legend">
+      <span class="legend-item"><span class="badge badge-now">sofort</span> hohe Priorität</span>
+      <span class="legend-item"><span class="badge badge-quick">schnell</span> Quick Win</span>
+      <span class="legend-item"><span class="badge badge-tech">technisch</span> einmalig</span>
+    </div>
+  </div>
+
+  <p class="branding">move:elevator · KI Stammtisch · April 2026</p>
+</div>
+
+<script>
+const sections = [
+  {
+    id:"s1", label:"Technische Basis (Eintrittskarte)", color:"#185FA5",
+    items:[
+      {l:"Indexierung aller wichtigen Seiten prüfen", h:"Search Console: Coverage-Report, keine Fehler, keine Noindex-Probleme", badge:"tech"},
+      {l:"Page Speed optimieren", h:"Ziel: Core Web Vitals grün – ideal unter 2,5 s LCP. Bilder als .webp, max. 100 KB", badge:"tech"},
+      {l:"Click Depth auf max. 3–4 Klicks begrenzen", h:"Alle wichtigen Seiten müssen für den KI-Retriever erreichbar sein", badge:"tech"},
+      {l:"Schema Markup ergänzen (FAQ, HowTo, Article)", h:"Nur 34 % nutzen es – hier ist ein schneller Vorsprung möglich", badge:"quick"},
+      {l:"llms.txt erstellen und deployen", h:"Datei auf domain.de/llms.txt – listet wichtige Seiten, Markenkontext und Kernaussagen für KI-Crawler", badge:"quick"},
+      {l:"robots.txt: GPTBot und andere KI-Crawler nicht blockieren", h:"Prüfen ob User-Agent GPTBot, ClaudeBot, PerplexityBot erlaubt ist", badge:"tech"},
+      {l:"Cloudflare-Check: KI-Bots nicht versehentlich blockiert", h:"Cloudflare hat seine Standardkonfiguration geändert und blockiert KI-Bots automatisch – wer Cloudflare nutzt, sollte die Bot-Einstellungen explizit prüfen und KI-Crawler freigeben", badge:"tech"},
+      {l:"Wichtigen Content server-seitig rendern (kein reines JavaScript)", h:"KI-Crawler wie GPTBot, ClaudeBot oder PerplexityBot sind reine HTTP-Fetcher ohne JS-Engine – sie sehen nur den HTML-Quellcode. Content der via React, Vue oder lazy loading dynamisch nachgeladen wird, ist für KI schlicht unsichtbar. Prüfen: Seite im Browser mit deaktiviertem JavaScript aufrufen – was fehlt, sieht die KI auch nicht", badge:"tech"}
+    ]
+  },
+  {
+    id:"s2", label:"Prompt Research & Content-Strategie", color:"#E8650A",
+    items:[
+      {l:"Top 10–20 Prompts definieren, zu denen ihr gefunden werden wollt", h:"Nicht Keywords – echte Fragen, so wie Nutzer sie in ChatGPT oder Perplexity eingeben", badge:"now"},
+      {l:"Query Fan-Out pro Thema analysieren", h:"Aus jedem Haupt-Prompt die 5–10 semantischen Sub-Queries ableiten (AlsoAsked, AnswerThePublic, Frase.io)", badge:"now"},
+      {l:"Content-Lücken füllen, die Wettbewerber nicht bedienen", h:"Fan-Out-Queries ohne Treffer = deine schnellste GEO-Chance", badge:"quick"},
+      {l:"Long-Tail und Nischen gezielt besetzen", h:"Speziell für den Query Fan-Out: Nischen-Fragen ohne Wettbewerb sind die einfachsten GEO-Einstiege – hier ist die Zitierhürde am niedrigsten", badge:"quick"},
+      {l:"H2-Überschriften als echte Fragen formulieren", h:"'Was ist...?', 'Wie funktioniert...?', 'Welche ... sind empfehlenswert?' – prompt-kompatibel schreiben", badge:"now"},
+      {l:"Topic Cluster aufbauen: Pillar Page + Cluster-Seiten", h:"Semantische Breite schlägt einzelne Keywords. Min. 2 ein- und 2 ausgehende interne Links pro Seite", badge:"now"},
+      {l:"Listicle-Content erstellen ('Top X / Best of'-Formate)", h:"Blog-Content ist der meistzitierte Seitentyp in AI Overviews. Für jeden relevanten Themencluster mindestens eine 'Top 10'-Seite mit strukturierten Vergleichsdaten, Vor-/Nachteilen und Preisindikation erstellen", badge:"now"}
+    ]
+  },
+  {
+    id:"s3", label:"Zitierbarer Content (Chunk-Optimierung)", color:"#0F6E56",
+    items:[
+      {l:"Direkte Antwort in den ersten 2–3 Zeilen jedes Absatzes", h:"44,2 % aller KI-Zitate kommen aus den ersten 30 % des Textes – Inverted Pyramid anwenden", badge:"now"},
+      {l:"Schachtelsätze über 25 Wörter vermeiden", h:"KI verliert semantischen Bezug bei zu langen Sätzen", badge:"quick"},
+      {l:"Präzise Fakten statt Meinungen: Zahlen, Quellen, Belege", h:"'Laut Statista...', 'Studien zeigen...' – KI zitiert lieber Primärquellen mit Beleg", badge:"now"},
+      {l:"Marketingsprache ohne Beleg entfernen", h:"'führend', 'innovativ', 'einzigartig' ohne Beleg = fliegt aus KI-Antworten raus", badge:"quick"},
+      {l:"FAQ-Block mit 3–5 echten Nutzerfragen ergänzen", h:"Jede Frage = ein potenzieller Fan-Out-Query der KI. Antwort direkt darunter, max. 3 Sätze", badge:"quick"},
+      {l:"Original Research oder eigene Daten publizieren", h:"KI zitiert Primärquellen überproportional häufig – eigene Studien, Umfragen oder Auswertungen sind Gold", badge:"now"},
+      {l:"Negative Beispiele explizit zeigen", h:"Content der klar zeigt was nicht funktioniert, wird von lernenden KI-Agenten als besonders vertrauenswürdig eingestuft – 'Was du vermeiden solltest' erhöht Zitierwürdigkeit", badge:"quick"},
+      {l:"Alt-Texte als Prozessschritte formulieren", h:"KI-Agenten bevorzugen strukturierten Content – Alt-Texte sollten beschreibend und prozessorientiert sein, z.B. 'Schritt 2: Nutzer gibt Suchbegriff ein' statt 'Screenshot der Suchmaske'", badge:"quick"},
+      {l:"Content-Freshness-Prozess einrichten", h:"40–60 % der zitierten Quellen rotieren monatlich. Wer Content einmal optimiert und liegen lässt, verliert Citations binnen 2–3 Monaten. Redaktionsplan mit Refresh-Zyklus für Top-Seiten aufsetzen (alle 4–8 Wochen)", badge:"now"}
+    ]
+  },
+  {
+    id:"s4", label:"Grounding Page & Markenkontext", color:"#993C1D",
+    items:[
+      {l:"Grounding Page erstellen (facts/[markenname])", h:"Keine Werbeseite – strukturierte Fakten: Entitätsklasse, Gründungsjahr, Standort, Kernleistungen, externe Quellen", badge:"now"},
+      {l:"Marke klar als Entität definieren", h:"KI strukturiert Wissen in Entitäten. Ohne klare Definition übernehmen externe Quellen die Einordnung", badge:"now"},
+      {l:"Wikipedia-Eintrag prüfen oder anlegen (falls relevant)", h:"LLMs zitieren Wikipedia häufig als Basisquelle für Entitätsbeschreibungen", badge:"tech"}
+    ]
+  },
+  {
+    id:"s5", label:"Digital PR & Off-Page Präsenz", color:"#533AB7",
+    items:[
+      {l:"Auf Reddit, Quora und Branchenportalen präsent sein", h:"32,9 % aller KI-Zitate kommen aus Quellen, die Google gar nicht kennt – diese Plattformen sind darunter", badge:"now"},
+      {l:"Gastbeiträge auf Fachblogs mit Transkript-Version", h:"Podcast-Auftritte mit Transkript indexierbar machen – KI kann Audio nicht lesen, Text schon", badge:"quick"},
+      {l:"Citation Outreach: Inhalte aktiv an Presse und Verzeichnisse pitchen", h:"Ziel: Multi-Source-Relevance – je mehr unabhängige Quellen über dich sprechen, desto höher die KI-Zitierwürdigkeit", badge:"now"},
+      {l:"LinkedIn-Beiträge als Key Takeaways aus Artikeln", h:"Carousel oder Textpost – erhöht Sichtbarkeit auf einer Plattform, die KI-Systeme indexieren", badge:"quick"},
+      {l:"Kundenbewertungen & UGC aktiv einsammeln", h:"Frische, verifizierte Bewertungen auf G2, Trustpilot und Google Reviews sind entscheidend für das Grounding von LLMs – sie sorgen dafür, dass Produkte auf Basis echter Nutzermeinungen empfohlen werden", badge:"now"}
+    ]
+  },
+  {
+    id:"s6", label:"Messen & Optimieren", color:"#5E5E5A",
+    items:[
+      {l:"Baseline messen: Brand Visibility Score", h:"% der KI-Antworten, die deine Marke nennen – manuell oder mit Tools wie Brandwatch, Semrush AI, Ahrefs AI", badge:"now"},
+      {l:"Source Visibility tracken (Citation Rate)", h:"Zitierungen ÷ Gesamtantworten × 100 – misst ob dein Content als Quelle genutzt wird", badge:"now"},
+      {l:"Share of Voice vs. Wettbewerb ermitteln", h:"Deine Erwähnungen ÷ alle Markennennungen im Themenbereich – zeigt echte Marktstellung in KI", badge:"now"},
+      {l:"Sentiment aktiv managen: Ton der KI-Erwähnungen prüfen", h:"Zielwert 65–85 auf der Sentiment-Skala. Negatives Sentiment in KI-Antworten aktiv korrigieren durch bessere Quellenlage und Drittquellen-Präsenz", badge:"now"},
+      {l:"AI-Traffic in GA4 sichtbar machen", h:"Custom Channel Group anlegen: GA4 Admin > Data Display > Channel Groups > New Channel Group. Regex: chatgpt\\.com|perplexity\\.ai|gemini\\.google\\.com|claude\\.ai – Channel über 'Referral' schieben. Retroaktiv verfügbar, 10-Minuten-Setup", badge:"tech"},
+      {l:"Debug-Prozess für nicht-zitierte Seiten einrichten", h:"Stufen 0–5: Prompt definiert? Seite vorhanden? Rankt sie? Wird sie als Quelle genutzt?", badge:"now"}
+    ]
+  }
+];
+
+const STORAGE_KEY = 'geo-checkliste-2026';
+const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+const state = {};
+sections.forEach(s => s.items.forEach((_,i) => {
+  const key = s.id+'_'+i;
+  state[key] = saved[key] === true;
+}));
+const total = sections.reduce((a,s) => a + s.items.length, 0);
+
+function countDone(){ return Object.values(state).filter(Boolean).length }
+
+function updateProgress(){
+  const done = countDone();
+  const pct = Math.round(done / total * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = done + ' von ' + total + ' erledigt';
+  document.getElementById('done-msg').style.display = done === total ? 'block' : 'none';
+  sections.forEach(s => {
+    const sec = document.getElementById(s.id);
+    if(!sec) return;
+    const d = s.items.filter((_,i) => state[s.id+'_'+i]).length;
+    sec.querySelector('.section-count').textContent = d + '/' + s.items.length;
+  });
+}
+
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)) }
+
+function toggle(sid, idx){
+  state[sid+'_'+idx] = !state[sid+'_'+idx];
+  const cb = document.getElementById('cb_'+sid+'_'+idx);
+  cb.className = 'cb' + (state[sid+'_'+idx] ? ' checked' : '');
+  saveState();
+  updateProgress();
+}
+
+function toggleSection(sid){
+  const items = document.getElementById('items_'+sid);
+  const chev = document.getElementById('chev_'+sid);
+  const open = items.classList.contains('open');
+  items.classList.toggle('open', !open);
+  chev.classList.toggle('open', !open);
+}
+
+function resetAll(){
+  Object.keys(state).forEach(k => state[k] = false);
+  document.querySelectorAll('.cb').forEach(el => el.className = 'cb');
+  localStorage.removeItem(STORAGE_KEY);
+  updateProgress();
+}
+
+const badgeMap = { now:'badge badge-now', quick:'badge badge-quick', tech:'badge badge-tech' };
+const badgeLabel = { now:'sofort', quick:'schnell', tech:'technisch' };
+
+const container = document.getElementById('sections');
+sections.forEach(s => {
+  const div = document.createElement('div');
+  div.className = 'section';
+  div.id = s.id;
+  div.innerHTML = `
+    <div class="section-header" onclick="toggleSection('${s.id}')">
+      <div class="section-icon" style="background:${s.color}">${sections.indexOf(s)+1}</div>
+      <span class="section-title">${s.label}</span>
+      <span class="section-count">0/${s.items.length}</span>
+      <span class="chevron" id="chev_${s.id}">&#9658;</span>
+    </div>
+    <div class="items" id="items_${s.id}">
+      ${s.items.map((item,i) => `
+        <div class="item" onclick="toggle('${s.id}',${i})">
+          <div class="cb${state[s.id+'_'+i] ? ' checked' : ''}" id="cb_${s.id}_${i}"></div>
+          <div class="item-text">
+            <div class="item-label">${item.l}<span class="${badgeMap[item.badge]}">${badgeLabel[item.badge]}</span></div>
+            <div class="item-hint">${item.h}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  container.appendChild(div);
+});
+
+document.getElementById('items_s1').classList.add('open');
+document.getElementById('chev_s1').classList.add('open');
+updateProgress();
+</script>
+</body>
+</html>
